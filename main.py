@@ -69,19 +69,19 @@ if(button_1):
             # main function
             if(button_1):
                     get_company_list_1 = get_company_list()
-                    data_1 = [i[1] for i in get_company_list_1]
+                    #data_1 = [i[1] for i in get_company_list_1]
                     dict_1 = {}
-                    for i in data_1[0:number_of_companies]:
+                    for i in get_company_list_1[0:number_of_companies]:
                         try:
-                            target = bollinger_band(i)
+                            target = bollinger_band(i[1])
                             target.run_test()
-                            dict_1[i] = target.call
+                            dict_1[i[0]] = target.call
                         except:
                              pass
                     # creating a dataframe
 
                     df = pd.DataFrame(dict_1.items(),columns=['company','call'])
-                    df = df[df['call'] != ""] #type: ignore
+                    df = df[df['call'] != ""]
                     # creating a pie chart
                     st.subheader("final call")
                     st.write(df)
