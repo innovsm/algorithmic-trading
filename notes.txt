@@ -1,0 +1,26 @@
+import pandas as pd
+import numpy as np
+
+# Read the data
+data = pd.read_csv('data.csv', index_col='Date')
+
+# Calculate the moving average
+moving_average = data['Stock A'].rolling(window=20).mean()
+
+# Calculate the price spread
+price_spread = data['Stock A'] - data['Stock B']
+
+# Calculate the threshold
+threshold = moving_average + 2 * np.std(price_spread)
+
+# Buy if the price spread is greater than the threshold
+if price_spread > threshold:
+    buy = True
+
+# Sell if the price spread is less than the threshold
+if price_spread < threshold:
+    sell = True
+
+# Print the results
+print('Buy:', buy)
+print('Sell:', sell)

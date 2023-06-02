@@ -1,0 +1,7 @@
+pandas
+numpy
+ta
+yfinance
+matplotlib
+seaborn
+tradingview_ta

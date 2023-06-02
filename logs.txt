@@ -1,0 +1,24 @@
+CSV FILE DESCRIPION:
+
+1> simple_ma_strategy --> uses SMA and sell when profit percentage is 0.2 [20 %]
+2> ma_trading_strategy_2 --> uses EMA to buy stock at  postive crossover [False, True] and sell stock at negative
+                             crossover [True, False]
+
+
+3> macd_trading_strategy --> uses MACD to buy stock at  postive crossover [False, True] and sell stock after 20% gain or 
+                             10 % loss
+
+
+
+4> rsi_trading_stragey --> used rsi_signal to buy stock when [rsi < 30] and sell when [1> profit is greater than 20 %]
+                            or [2> loss is greater than -10 %]
+
+5> bollinger_band  --> uses [lower bollinger band, +ve volumne slope, rsi > 50] to buy the stock and sell
+                       if loss > -10 %
+
+
+---------------------------------------------------------------------------------
+
+                            FUNDAMENTAL ANALYSIS SECTION
+
+                            
