@@ -47,7 +47,7 @@ class bollinger_band:
         for i in main_list:
             if(i[3] >= i[6]):
                 self.signal = 1
-        print(self.signal)
+        #print(self.signal)
     # main function
     def run_test(self):
         self.signal_check()
