@@ -76,7 +76,7 @@ class bollinger_band:
                             self.call = "buy"
 
                 else:
-                    print("condtion not passed")
+                    pass
         except:
             self.call = "sell"
 
