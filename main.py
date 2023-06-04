@@ -26,6 +26,7 @@ def load_data():
 with st.sidebar: #type: ignore
     #st.title("Bike Rental Prediction")
     button_1 = st.radio("options", ['Fundamental Analysis', "Stock Recommendation","Financials"])
+
     
 if(button_1):
         
@@ -90,6 +91,7 @@ if(button_1):
         else:
 
             st.title("Financials")
+            st.write("EPS and DPS in ₹. Other numbers except Payout Ratio in ₹ cr, Shares outstanding numbers in cr. Other numbers in ₹ cr")
             st.subheader("Income Statement")
             data_1 = load_data_1()
             select_stock = st.selectbox("Select a stock",data_1['companies_list'])
