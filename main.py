@@ -97,10 +97,12 @@ if(button_1):
                 try:
 
                     dataframe_1 = income_statement(select_stock)
+                    
                     dataframe_1 = dataframe_1.T
                     st.subheader("Income Statement")
                     st.write(dataframe_1.T)
                     dataframe_2 = balance_sheet(select_stock)
+                    dataframe_2.replace("—", None, inplace=True)
                     dataframe_2 = dataframe_2.T
                     st.subheader("Balance Sheet")
                     st.write(dataframe_2.T)
