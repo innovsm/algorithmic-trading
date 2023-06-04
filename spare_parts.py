@@ -11,7 +11,46 @@ def book_value_refined(x):
         return float(x.replace(",",""))
     except:
         return x
-    
+
+
+def balance_sheet(ticker):
+    data_1 = pd.read_csv("tickertape.csv")
+    x = data_1[data_1['companies_list'] == ticker]['companies']
+    x = x.values[0]
+
+    data_1 = urlopen("https://www.tickertape.in/stocks/{}/financials?checklist=basic&period=annual&statement=balancesheet&view=normal".format(x))
+    bsObj = BeautifulSoup(data_1)
+    target_area = bsObj.find("div", {"class": "jsx-2537935686 financials-table relative mb32"})
+    columns = []
+    for i in target_area.find("thead").find_all("th"): #type: ignore
+        columns.append(i.text)
+    list_1 = []
+    final_list = []
+    count = 0
+    for i in target_area.find("table"): #type: ignore
+        if(count == 1):
+            temp_list = []
+            for j in i.find_all("td"):
+                try:
+                    x = j.text
+                    x = x.replace(",","")
+                    if(x == "—"):
+                        temp_list.append(x)
+                    else:
+                        x = float(x)
+                        temp_list.append(x)
+                except:
+                    final_list.append(temp_list)
+                    temp_list = []
+                    if(x != "—"):
+                        list_1.append(x) #type: ignore
+        count += 1
+    list_1.pop()
+    final_list.pop(0)
+    #print(final_list)
+    print(len(final_list), len(list_1), len(columns))
+    data_1 = pd.DataFrame(final_list,index=list_1,columns=columns[1:])
+    return data_1
 
 def income_statement(ticker):
     data_1 = pd.read_csv("tickertape.csv")

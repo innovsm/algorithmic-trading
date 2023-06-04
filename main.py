@@ -5,7 +5,7 @@ import seaborn as sns
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns 
-from spare_parts import ratios,get_company_list,income_statement
+from spare_parts import ratios,get_company_list,income_statement,balance_sheet
 from recommend_stock import bollinger_band
 
 # setting the user interface
@@ -98,7 +98,12 @@ if(button_1):
 
                     dataframe_1 = income_statement(select_stock)
                     dataframe_1 = dataframe_1.T
+                    st.subheader("Income Statement")
                     st.write(dataframe_1.T)
+                    dataframe_2 = balance_sheet(select_stock)
+                    dataframe_2 = dataframe_2.T
+                    st.subheader("Balance Sheet")
+                    st.write(dataframe_2.T)
                     # visulization of the data
                     st.subheader("Visualization of the data")
                     ratio_selected = st.selectbox("Select a ratio",dataframe_1.columns)
