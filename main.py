@@ -105,9 +105,17 @@ if(button_1):
                     st.subheader("Balance Sheet")
                     st.write(dataframe_2.T)
                     # visulization of the data
-                    st.subheader("Visualization of the data")
-                    ratio_selected = st.selectbox("Select a ratio",dataframe_1.columns)
-                    st.line_chart(dataframe_1[ratio_selected]) #type: ignore
+                    st.subheader("Visulization")
+                    button_2 = st.selectbox("Select a financial statements",["","Income Statement","Balance Sheet"])
+                    if(button_2 == "Income Statement"):
+                         st.subheader("Visualization of the data[Income Statement]")
+                         ratio_selected = st.multiselect("Select a ratio",dataframe_1.columns)
+                         st.line_chart(dataframe_1[ratio_selected]) #type: ignore
+                    elif(button_2 == "Balance Sheet"):
+                        st.subheader("Visualization of the data[Balance Sheet]")
+                        ratio_selected = st.multiselect("Select a ratio",dataframe_2.columns)
+                        st.line_chart(dataframe_2[ratio_selected]) #type: ignore
+                    
                 except:
                      pass
                 
