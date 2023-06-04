@@ -5,15 +5,17 @@ import seaborn as sns
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns 
-from spare_parts import ratios,get_company_list
+from spare_parts import ratios,get_company_list,income_statement
 from recommend_stock import bollinger_band
 
 # setting the user interface
 st.set_page_config(page_title="Stock Analysis",page_icon="📈",layout="wide")
 # setting the color of the user interface
 
-
-
+@st.cache_data
+def load_data_1():
+    df = pd.read_csv("tickertape.csv")
+    return df
 
 @st.cache_data
 def load_data():
@@ -21,9 +23,9 @@ def load_data():
     df['company'] = df['company'].str.lower()
     return df
 
-with st.sidebar:
+with st.sidebar: #type: ignore
     #st.title("Bike Rental Prediction")
-    button_1 = st.radio("page", ['Fundamental Analysis', "Stock Recommendation"])
+    button_1 = st.radio("options", ['Fundamental Analysis', "Stock Recommendation","Financials"])
     
 if(button_1):
         
@@ -60,7 +62,7 @@ if(button_1):
         
 
     
-        else:
+        elif(button_1 == "Stock Recommendation"):
             st.title("Stock Recommendation")
             # adding slider for selecting number of companies
             st.subheader("Select the number of companies")
@@ -73,7 +75,7 @@ if(button_1):
                     dict_1 = {}
                     for i in get_company_list_1[0:number_of_companies]:
                         try:
-                            target = bollinger_band(i[1])
+                            target = bollinger_band(i[1 ])
                             target.run_test()
                             dict_1[i[0]] = target.call
                         except:
@@ -85,6 +87,25 @@ if(button_1):
                     # creating a pie chart
                     st.subheader("final call")
                     st.write(df)
-                        
+        else:
+
+            st.title("Financials")
+            data_1 = load_data_1()
+            select_stock = st.selectbox("Select a stock",data_1['companies_list'])
+            if(len(select_stock) > 0): #type: ignore
+                try:
+
+                    dataframe_1 = income_statement(select_stock)
+                    dataframe_1 = dataframe_1.T
+                    st.write(dataframe_1.T)
+                    # visulization of the data
+                    st.subheader("Visualization of the data")
+                    ratio_selected = st.selectbox("Select a ratio",dataframe_1.columns)
+                    st.line_chart(dataframe_1[ratio_selected]) #type: ignore
+                except:
+                     pass
+                
+
+
         
 
