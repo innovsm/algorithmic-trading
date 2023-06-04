@@ -32,7 +32,7 @@ if(button_1):
         
         if(button_1 == "Fundamental Analysis"):
             st.title("Fundamental Analysis")
-            st.subheader("<--- More options[scroll the sidebar[>] ]")
+            st.subheader("<--- More options[scroll the sidebar]")
             # providing search option
             st.subheader("Search for a stock")
             data = load_data()
