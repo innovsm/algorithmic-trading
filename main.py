@@ -90,6 +90,7 @@ if(button_1):
         else:
 
             st.title("Financials")
+            st.subheader("Income Statement")
             data_1 = load_data_1()
             select_stock = st.selectbox("Select a stock",data_1['companies_list'])
             if(len(select_stock) > 0): #type: ignore
