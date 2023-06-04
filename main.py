@@ -32,6 +32,7 @@ if(button_1):
         
         if(button_1 == "Fundamental Analysis"):
             st.title("Fundamental Analysis")
+            st.subheader("<--- More options")
             # providing search option
             st.subheader("Search for a stock")
             data = load_data()
