@@ -74,6 +74,8 @@ class bollinger_band:
                             self.call = "strong_buy"
                         elif(x['RECOMMENDATION'] == "BUY"):
                             self.call = "buy"
+                        else:
+                            self.call = "strong_sell"
 
                 else:
                     # checking [RSI] and [OBV - diff] condition
