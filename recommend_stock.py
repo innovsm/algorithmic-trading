@@ -80,7 +80,7 @@ class bollinger_band:
                 else:
                     # checking [RSI] and [OBV - diff] condition
                     if(current_node[3] < current_node[7]):
-                        if(x['RECOMMENDATION'] == "STRONG_SELL"):
+                        if(x['RECOMMENDATION'] == "SELL"):
                             self.call = "strong_sell"
 
                 # selling the stock
