@@ -59,16 +59,16 @@ class bollinger_band:
                 current_node = i
                 # buying section
                 # checking the bollinger signal
+                data = TA_Handler(
+                    symbol = self.ticker,
+                    exchange="NSE",
+                    screener="india",
+                    interval=Interval.INTERVAL_1_DAY
+                )
+                x = data.get_analysis().summary #type: ignore
                 if(self.signal == 1):
                     # checking [RSI] and [OBV - diff] condition
                     if(current_node[12] > 0 and current_node[11] > 50):  # initally current_node[11] > 50
-                        data = TA_Handler(
-                            symbol = self.ticker,
-                            exchange="NSE",
-                            screener="india",
-                            interval=Interval.INTERVAL_1_DAY
-                        )
-                        x = data.get_analysis().summary #type: ignore
                         print(x)
                         if(x['RECOMMENDATION'] == "STRONG_BUY"):
                             self.call = "strong_buy"
@@ -76,7 +76,13 @@ class bollinger_band:
                             self.call = "buy"
 
                 else:
-                    pass
+                    # checking [RSI] and [OBV - diff] condition
+                    if(current_node[3] < current_node[7]):
+                        if(x['RECOMMENDATION'] == "STRONG_SELL"):
+                            self.call = "strong_sell"
+
+                # selling the stock
+                
         except:
             self.call = "sell"
 
