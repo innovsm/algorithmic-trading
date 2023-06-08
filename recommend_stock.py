@@ -85,5 +85,5 @@ class bollinger_band:
                 # selling the stock
                 
         except:
-            self.call = "sell"
+            pass
 
