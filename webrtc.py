@@ -3,7 +3,6 @@ import av
 import cv2
 import numpy as np
 import streamlit as st
-import cv2
 from streamlit_webrtc import WebRtcMode, webrtc_streamer
 
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
