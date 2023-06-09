@@ -1,18 +1,32 @@
 
-
-from streamlit_webrtc import webrtc_streamer
-
-
-from streamlit_webrtc import webrtc_streamer
 import av
-webrtc_streamer(key="sample")
+import cv2
+import numpy as np
+import streamlit as st
+from streamlit_webrtc import WebRtcMode, webrtc_streamer
 
-def video_frame_callback(frame):
-    img = frame.to_ndarray(format="bgr24")
+def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
+    image = frame.to_ndarray(format="bgr24")
 
-    flipped = img[::-1,:,:]
+    # Run inference
+    blob = cv2.dnn.blobFromImage(
+        cv2.resize(image, (300, 300)), 0.007843, (300, 300), 127.5
+    )
 
-    return av.VideoFrame.from_ndarray(flipped, format="bgr24")
+
+    return av.VideoFrame.from_ndarray(image, format="bgr24")
 
 
-webrtc_streamer(key="example", video_frame_callback=video_frame_callback)
+webrtc_ctx = webrtc_streamer(
+    key="object-detection",
+    mode=WebRtcMode.SENDRECV,
+    rtc_configuration={
+        "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}],
+        "iceTransportPolicy": "relay",
+    },
+    video_frame_callback=video_frame_callback,
+    media_stream_constraints={"video": True, "audio": False},
+    async_processing=True,
+)
+
+

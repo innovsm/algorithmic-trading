@@ -7,3 +7,4 @@ seaborn
 tradingview_ta
 streamlit_webrtc
 av
+opencv-python
