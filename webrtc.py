@@ -3,15 +3,13 @@ import av
 import cv2
 import numpy as np
 import streamlit as st
+import cv2
 from streamlit_webrtc import WebRtcMode, webrtc_streamer
 
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     image = frame.to_ndarray(format="bgr24")
 
     # Run inference
-    blob = cv2.dnn.blobFromImage(
-        cv2.resize(image, (300, 300)), 0.007843, (300, 300), 127.5
-    )
 
 
     return av.VideoFrame.from_ndarray(image, format="bgr24")
