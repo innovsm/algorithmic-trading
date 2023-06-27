@@ -87,3 +87,6 @@ class bollinger_band:
         except:
             self.call = "sell"
 
+
+
+# =============================================

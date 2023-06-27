@@ -87,7 +87,7 @@ def income_statement(ticker):
 def ratios(ticker):
     ticker = ticker.replace(" ", "-")
     html = urlopen("https://stock-financials.valuestocks.in/en/{}-ratio-analysis".format(ticker))
-    bsObj = BeautifulSoup(html)
+    bsObj = BeautifulSoup(html,'html.parser')
     target_table = bsObj.find("table", {"id": "tblStandalone"})
     ratio_list = []
     for i in target_table.find_all("tr"):#type: ignore
