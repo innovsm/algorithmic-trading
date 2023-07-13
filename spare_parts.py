@@ -18,9 +18,10 @@ def balance_sheet(ticker):
     x = data_1[data_1['companies_list'] == ticker]['companies']
     x = x.values[0]
 
-    data_1 = urlopen("https://www.tickertape.in/stocks/{}/financials?checklist=basic&period=annual&statement=balancesheet&view=normal".format(x))
+    data_1 = urlopen("https://www.tickertape.in/stocks/{}#financials".format(x))
+    #print(data_1)
     bsObj = BeautifulSoup(data_1)
-    target_area = bsObj.find("div", {"class": "jsx-2537935686 financials-table relative mb32"})
+    target_area = bsObj.find("div",{"class": "jsx-2510798477"}).find("div", {"class": "jsx-2510798477 financials-table relative mb32"}) #type: ignore
     columns = []
     for i in target_area.find("thead").find_all("th"): #type: ignore
         columns.append(i.text)
@@ -57,9 +58,9 @@ def income_statement(ticker):
     x = data_1[data_1['companies_list'] == ticker]['companies']
     x = x.values[0]
 
-    data_1 = urlopen("https://www.tickertape.in/stocks/{}/financials?checklist=basic&period=annual&statement=income&view=normal".format(x))
-    bsObj = BeautifulSoup(data_1)
-    target_area = bsObj.find("div", {"class": "jsx-2537935686 financials-table relative mb32"})
+    data_1 = urlopen("https://www.tickertape.in/stocks/{}#financials".format(x))
+    bsObj = BeautifulSoup(data_1,features="lxml")
+    target_area = bsObj.find("div",{"class": "jsx-2510798477"}).find("div", {"class": "jsx-2510798477 financials-table relative mb32"}) #type: ignore
     columns = []
     for i in target_area.find("thead").find_all("th"): #type: ignore
         columns.append(i.text)

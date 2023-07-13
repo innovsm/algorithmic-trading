@@ -6,9 +6,50 @@ import seaborn as sns
 from spare_parts import get_company_list
 from tradingview_ta import TA_Handler, Interval, Exchange
 import ta
+import math
 
 
 # main class
+def calculate_linear_regression_r2(source, length):
+    # Calculate linear regression
+    bar_index = np.arange(1, len(source) + 1)
+    sumX = np.sum(bar_index[-length:])
+    sumY = np.sum(source[-length:])
+    sumX2 = np.sum(np.power(bar_index[-length:], 2))
+    sumY2 = np.sum(np.power(source[-length:], 2))
+    sumXY = np.sum(bar_index[-length:] * source[-length:])
+
+    # Pearson correlation coefficient
+    r = (length * sumXY - sumX * sumY) / math.sqrt((length * sumX2 - sumX ** 2) * (length * sumY2 - sumY ** 2))
+
+    # Coefficient of determination (R2)
+    r2 = r ** 2
+
+    return r2
+def process_company_list(data_test,company_number):
+    final_list = {}
+    for i in data_test[:company_number]:
+        try:
+            data = yf.download(i[1]+".NS", period="30d", interval="60m")
+            r2 = calculate_linear_regression_r2(data['Close'], 14)
+            macd_data = ta.trend.MACD(data['Close']).macd()  # type: ignore
+            macdsignal_data = ta.trend.MACD(data['Close']).macd_signal()  # type: ignore
+            ta_handler = TA_Handler(
+                symbol=i[1],
+                exchange="NSE",
+                screener="india",
+                interval=Interval.INTERVAL_1_DAY
+            )
+            x = ta_handler.get_analysis().summary  # type: ignore
+
+            if r2 <= 0.05 and macd_data[-1] > macdsignal_data[-1]:
+                if(x['RECOMMENDATION'] == "STRONG_BUY" or x['RECOMMENDATION'] == "BUY"):
+                    final_list[i[1]] = "BUY"
+        except Exception as e:
+            print(e)
+            pass
+
+    return list(final_list.keys())
 class bollinger_band:
     def __init__(self, ticker):
         self.ticker = ticker

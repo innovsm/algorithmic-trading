@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns 
 from spare_parts import ratios,get_company_list,income_statement,balance_sheet
-from recommend_stock import bollinger_band
+from recommend_stock import *
 
 # setting the user interface
 st.set_page_config(page_title="Stock Analysis",page_icon="📈",layout="wide")
@@ -25,7 +25,7 @@ def load_data():
 
 with st.sidebar: #type: ignore
     #st.title("Bike Rental Prediction")
-    button_1 = st.radio("options", ['Fundamental Analysis', "Stock Recommendation","Financials"])
+    button_1 = st.radio("options", ['Fundamental Analysis', "Stock Recommendation","Financials","Stock Recommendation intraday"])
 
     
 if(button_1):
@@ -89,6 +89,21 @@ if(button_1):
                     # creating a pie chart
                     st.subheader("final call")
                     st.write(df)
+        elif(button_1 == "Stock Recommendation intraday"):
+
+            st.title("Stock Recommendation")
+            # adding slider for selecting number of companies
+            st.subheader("Select the number of companies")
+            number_of_companies = st.slider("Number of companies",1,2012)
+            button_1 = st.button("Run")
+            # main function
+            if(button_1):
+                 st.write("processing")
+                 result = process_company_list(get_company_list(),number_of_companies)
+                 st.write(result)
+                 
+
+
         else:
 
             st.title("Financials")
@@ -104,6 +119,7 @@ if(button_1):
                     dataframe_1 = dataframe_1.T
                     st.subheader("Income Statement")
                     st.write(dataframe_1.T)
+                    print("processing balance sheet")
                     dataframe_2 = balance_sheet(select_stock)
                     dataframe_2.replace("—", None, inplace=True)
                     dataframe_2 = dataframe_2.T
@@ -121,8 +137,9 @@ if(button_1):
                         ratio_selected = st.multiselect("Select a ratio",dataframe_2.columns)
                         st.line_chart(dataframe_2[ratio_selected]) #type: ignore
                     
-                except:
-                     pass
+                except Exception as e:
+                     
+                     st.write(str(e))
                 
 
 
