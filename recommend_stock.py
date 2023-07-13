@@ -34,17 +34,12 @@ def process_company_list(data_test,company_number):
             r2 = calculate_linear_regression_r2(data['Close'], 14)
             macd_data = ta.trend.MACD(data['Close']).macd()  # type: ignore
             macdsignal_data = ta.trend.MACD(data['Close']).macd_signal()  # type: ignore
-            ta_handler = TA_Handler(
-                symbol=i[1],
-                exchange="NSE",
-                screener="india",
-                interval=Interval.INTERVAL_1_DAY
-            )
-            x = ta_handler.get_analysis().summary  # type: ignore
+
+            
 
             if r2 <= 0.05 and macd_data[-1] > macdsignal_data[-1]:
-                if(x['RECOMMENDATION'] == "STRONG_BUY" or x['RECOMMENDATION'] == "BUY"):
-                    final_list[i[1]] = "BUY"
+              
+                final_list[i[1]] = "BUY"
         except Exception as e:
             print(e)
             pass
