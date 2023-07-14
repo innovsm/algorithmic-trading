@@ -36,15 +36,14 @@ def process_company_list(data_test,company_number):
             macdsignal_data = ta.trend.MACD(data['Close']).macd_signal()  # type: ignore
 
             
-
             if (r2>0.3 and r2 <= 0.7) and macd_data[-1] > macdsignal_data[-1]:
               
-                final_list[i[1]] = "BUY"
+                final_list[i[1]] = ["BUY",data['Close'],macd_data,macdsignal_data]
         except Exception as e:
             print(e)
             pass
 
-    return list(final_list.keys())
+    return list(final_list.keys()),list(final_list.values())
 class bollinger_band:
     def __init__(self, ticker):
         self.ticker = ticker
