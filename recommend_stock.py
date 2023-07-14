@@ -9,7 +9,26 @@ import ta
 import math
 
 
-# main class
+# main class\
+def calculate_linear_regression_r2_series(source, length):
+    r2_values = np.empty_like(source)  # Create an empty array to store R2 values
+
+    for i in range(length, len(source)):
+        sub_source = source[i - length:i]
+
+        bar_index = np.arange(1, len(sub_source) + 1)
+        sumX = np.sum(bar_index)
+        sumY = np.sum(sub_source)
+        sumX2 = np.sum(np.power(bar_index, 2))
+        sumY2 = np.sum(np.power(sub_source, 2))
+        sumXY = np.sum(bar_index * sub_source)
+
+        r = (length * sumXY - sumX * sumY) / math.sqrt((length * sumX2 - sumX ** 2) * (length * sumY2 - sumY ** 2))
+        r2 = r ** 2
+
+        r2_values[i] = r2  # Store the R2 value in the array
+    
+    return pd.Series(r2_values, index=source.index)  # Return a Series with R2 values for each value in the series
 def calculate_linear_regression_r2(source, length):
     # Calculate linear regression
     bar_index = np.arange(1, len(source) + 1)
@@ -28,17 +47,23 @@ def calculate_linear_regression_r2(source, length):
     return r2
 def process_company_list(data_test,company_number):
     final_list = {}
+
     for i in data_test[:company_number]:
         try:
             data = yf.download(i[1]+".NS", period="30d", interval="30m")
+            
             r2 = calculate_linear_regression_r2(data['Close'], 14)
             macd_data = ta.trend.MACD(data['Close']).macd()  # type: ignore
             macdsignal_data = ta.trend.MACD(data['Close']).macd_signal()  # type: ignore
-
-            
-            if (r2>0.3 and r2 <= 0.7) and macd_data[-1] > macdsignal_data[-1]:
+            data['macd'] = macd_data
+            data['macd_signal'] = macdsignal_data
+            data['r2']  = calculate_linear_regression_r2_series(data['Close'], 14)
+            data.dropna(inplace=True)
+            data.index = np.arange(0,len(data)) # type: ignore
+            #alfa =  data.index
+            if (r2>0.15 and r2 <= 0.7) and macd_data[-1] > macdsignal_data[-1]:
               
-                final_list[i[1]] = [data['Close'],macd_data,macdsignal_data]
+                final_list[i[1]] = [data[['Close','macd','macd_signal','r2']]]
         except Exception as e:
             print(e)
             pass

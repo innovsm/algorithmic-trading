@@ -7,6 +7,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns 
 from spare_parts import ratios,get_company_list,income_statement,balance_sheet
 from recommend_stock import *
+import plotly.graph_objects as go
+import plotly.express as px
+
 
 # setting the user interface
 st.set_page_config(page_title="Stock Analysis",page_icon="📈",layout="wide")
@@ -100,12 +103,35 @@ if(button_1):
             if(button_1):
                  st.write("processing")
                  result = process_company_list(get_company_list(),number_of_companies)
+                 
                  for i, j in zip(result[0], result[1]):
                       st.write(i)
+                      print(j)
                       with st.expander("stock chart",False):
-                           for k in j:
-                            st.pyplot(k)
+                        for k in j:
+                            fig_close = go.Figure(data=go.Scatter(x=k.index, y=k['Close'], mode='lines'))
+                            fig_close.update_layout(title="Close Data", xaxis_title="Date", yaxis_title="Close Value")
+                            fig_macd = go.Figure()
+                            fig_macd.add_trace(go.Scatter(x=k.index, y=k['macd'].tail(60), mode='lines', name='MACD',line=dict(color='red')))
+                            fig_macd.add_trace(go.Scatter(x=k.index, y=k['macd_signal'].tail(60), mode='lines', name='MACD Signal',line=dict(color='yellow')))
+                            fig_macd.update_layout(title="MACD Data", xaxis_title="Date", yaxis_title="MACD Value")
 
+                            # alfa=======================
+                            fig_r2 = go.Figure()
+                            fig_r2.add_trace(go.Scatter(x=k.index, y=k['r2'].tail(60), mode='lines', name='r2_score',line=dict(color='red')))
+                            fig_r2.update_layout(title="r2 data", xaxis_title="Date", yaxis_title="r2_data")
+
+                            # seperation
+                            col_1 , col_2 = st.columns(2)
+                            st.plotly_chart(fig_close)
+
+                            with col_1:
+                                st.plotly_chart(fig_macd)
+                            with col_2:
+
+                                st.plotly_chart(fig_r2)
+
+              
 
                  
 
