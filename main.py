@@ -100,7 +100,7 @@ if(button_1):
             if(button_1):
                  st.write("processing")
                  result = process_company_list(get_company_list(),number_of_companies)
-                 for i , j  in result[0],result[1]:
+                 for i, j in zip(result[0], result[1]):
                       st.write(i)
                       with st.expander("stock chart",False):
                            for k in j:
