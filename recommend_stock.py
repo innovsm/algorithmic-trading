@@ -37,7 +37,7 @@ def process_company_list(data_test,company_number):
 
             
 
-            if r2 <= 0.05 and macd_data[-1] > macdsignal_data[-1]:
+            if (r2>0.3 and r2 <= 0.7) and macd_data[-1] > macdsignal_data[-1]:
               
                 final_list[i[1]] = "BUY"
         except Exception as e:
