@@ -122,7 +122,7 @@ if(button_1):
                             fig_r2.update_layout(title="r2 data", xaxis_title="Date", yaxis_title="r2_data")
 
                             # seperation
-                            col_1 , col_2 = st.columns(2)
+                            col_1 , col_2 = st.columns([3,2])
                             st.plotly_chart(fig_close)
 
                             with col_1:
