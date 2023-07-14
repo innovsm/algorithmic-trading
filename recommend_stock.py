@@ -43,7 +43,7 @@ def process_company_list(data_test,company_number):
             print(e)
             pass
 
-    return list(final_list.keys()),list(final_list.values())
+    return [list(final_list.keys()),list(final_list.values())]
 class bollinger_band:
     def __init__(self, ticker):
         self.ticker = ticker
