@@ -111,8 +111,8 @@ if(button_1):
                             fig_close = go.Figure(data=go.Scatter(x=k.index, y=k['Close'], mode='lines'))
                             fig_close.update_layout(title="Close Data", xaxis_title="Date", yaxis_title="Close Value")
                             fig_macd = go.Figure()
-                            fig_macd.add_trace(go.Scatter(x=k.index, y=k['macd'].tail(60), mode='lines', name='MACD',line=dict(color='red')))
-                            fig_macd.add_trace(go.Scatter(x=k.index, y=k['macd_signal'].tail(60), mode='lines', name='MACD Signal',line=dict(color='yellow')))
+                            fig_macd.add_trace(go.Scatter(x=k.index, y=k['macd'].tail(40), mode='lines', name='MACD',line=dict(color='red')))
+                            fig_macd.add_trace(go.Scatter(x=k.index, y=k['macd_signal'].tail(40), mode='lines', name='MACD Signal',line=dict(color='yellow')))
                             fig_macd.update_layout(title="MACD Data", xaxis_title="Date", yaxis_title="MACD Value")
 
                             # alfa=======================
