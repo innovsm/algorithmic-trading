@@ -106,7 +106,6 @@ if(button_1):
                  
                  for i, j in zip(result[0], result[1]):
                       st.write(i)
-                      print(j)
                       with st.expander("stock chart",False):
                         for k in j:
                             fig_close = go.Figure(data=go.Scatter(x=k.index, y=k['Close'], mode='lines'))
@@ -118,18 +117,18 @@ if(button_1):
 
                             # alfa=======================
                             fig_r2 = go.Figure()
-                            fig_r2.add_trace(go.Scatter(x=k.index, y=k['r2'].tail(60), mode='lines', name='r2_score',line=dict(color='red')))
+                            fig_r2.add_trace(go.Scatter(x=k.index, y=k['r2'].tail(30), mode='lines', name='r2_score',line=dict(color='red')))
                             fig_r2.update_layout(title="r2 data", xaxis_title="Date", yaxis_title="r2_data")
 
                             # seperation
-                            col_1 , col_2 = st.columns([3,2])
+                            col_1 , col_2 = st.columns([0.6,0.4])
                             st.plotly_chart(fig_close)
 
                             with col_1:
-                                st.plotly_chart(fig_macd)
+                                st.plotly_chart(fig_macd,use_container_width=True,sharing='streamlit')
                             with col_2:
 
-                                st.plotly_chart(fig_r2)
+                                st.plotly_chart(fig_r2,use_container_width=True,sharing='streamlit') #type: ignore
 
               
 

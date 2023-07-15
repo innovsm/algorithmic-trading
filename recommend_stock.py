@@ -28,7 +28,7 @@ def calculate_linear_regression_r2_series(source, length):
 
         r2_values[i] = r2  # Store the R2 value in the array
     
-    return pd.Series(r2_values, index=source.index)  # Return a Series with R2 values for each value in the series
+    return pd.Series(r2_values, index=source.index)  # Return a Series with R2 values for each value in the seriesu
 def calculate_linear_regression_r2(source, length):
     # Calculate linear regression
     bar_index = np.arange(1, len(source) + 1)
