@@ -13,7 +13,7 @@ import math
 def convert_to_4h_data(ticker_symbol, period = "40d"):
     # Download the 60-minute data
     data_1 = yf.download(ticker_symbol, period=period, interval="60m")
-    columns = ['Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']
+
 
     # Resample the data to 4-hour intervals
     data_4h = data_1.resample('4H').agg({
