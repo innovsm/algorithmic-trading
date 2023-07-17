@@ -9,7 +9,29 @@ import ta
 import math
 
 
-# main class\
+
+def convert_to_4h_data(ticker_symbol, period = "40d"):
+    # Download the 60-minute data
+    data_1 = yf.download(ticker_symbol, period=period, interval="60m")
+    columns = ['Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']
+
+    # Resample the data to 4-hour intervals
+    data_4h = data_1.resample('4H').agg({
+        'Open': 'first',  #type: ignore
+        'High': 'max',  #type: ignore
+        'Low': 'min',   #type: ignore
+        'Close': 'last', # ype: ignore
+        'Adj Close': 'last', #type: ignore
+        'Volume': 'sum' #type: ignore
+    }) # type: ignore
+
+    # Remove any rows with missing values
+    data_4h = data_4h.dropna()
+
+    return data_4h
+
+# Example usage
+
 def calculate_linear_regression_r2_series(source, length):
     r2_values = np.empty_like(source)  # Create an empty array to store R2 values
 
@@ -50,8 +72,7 @@ def process_company_list(data_test,company_number):
 
     for i in data_test[:company_number]:
         try:
-            data = yf.download(i[1]+".NS", period="30d", interval="30m")
-            
+            data = convert_to_4h_data(i[1]+".NS")
             r2 = calculate_linear_regression_r2(data['Close'], 14)
             macd_data = ta.trend.MACD(data['Close']).macd()  # type: ignore
             macdsignal_data = ta.trend.MACD(data['Close']).macd_signal()  # type: ignore
