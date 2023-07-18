@@ -72,7 +72,7 @@ def process_company_list(data_test,company_number):
 
     for i in data_test[:company_number]:
         try:
-            data = convert_to_4h_data(i[1]+".NS")
+            data = yf.download(i[1]+".NS", period = "40d", interval = "60m")
             r2 = calculate_linear_regression_r2(data['Close'], 14)
             macd_data = ta.trend.MACD(data['Close']).macd()  # type: ignore
             macdsignal_data = ta.trend.MACD(data['Close']).macd_signal()  # type: ignore
@@ -82,7 +82,8 @@ def process_company_list(data_test,company_number):
             data.dropna(inplace=True)
             data.index = np.arange(0,len(data)) # type: ignore
             #alfa =  data.index
-            if (r2>0.15 and r2 <= 0.7) and macd_data[-1] > macdsignal_data[-1]:
+            
+            if (macd_data[-1] > macdsignal_data[-1]):
               
                 final_list[i[1]] = [data[['Close','macd','macd_signal','r2']]]
         except Exception as e:
