@@ -84,8 +84,8 @@ def process_company_list(data_test,company_number):
             #alfa =  data.index
             
             if (macd_data[-1] > macdsignal_data[-1] and macd_data[-1] < 0 and  macdsignal_data[-1] < 0):
-              
-                final_list[i[1]] = [data[['Close','macd','macd_signal','r2']]]
+                if(macdsignal_data[-1]/ macd_data[-1] < 0.90 and macdsignal_data[-1]/ macd_data[-1] > 0.50):
+                    final_list[i[1]] = [data[['Close','macd','macd_signal','r2']]]
         except Exception as e:
             print(e)
             pass
