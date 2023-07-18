@@ -83,7 +83,7 @@ def process_company_list(data_test,company_number):
             data.index = np.arange(0,len(data)) # type: ignore
             #alfa =  data.index
             
-            if (macd_data[-1] > macdsignal_data[-1]):
+            if (macd_data[-1] > macdsignal_data[-1] and macd_data[-2] < macdsignal_data[-2]):
               
                 final_list[i[1]] = [data[['Close','macd','macd_signal','r2']]]
         except Exception as e:
