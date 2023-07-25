@@ -88,8 +88,25 @@ def process_company_list(data_test,company_number):
                 screener="india",
                 interval= Interval.INTERVAL_1_HOUR
                 )
+            data_TA_4_hour = TA_Handler(
+                symbol = i[1],
+                exchange="NSE",
+                screener="india",
+                interval= Interval.INTERVAL_4_HOURS
+
+            )
+            data_TA_day = TA_Handler(
+                symbol = i[1],
+                exchange="NSE",
+                screener="india",
+                interval= Interval.INTERVAL_1_DAY
+
+            )
             X = data_TA.get_analysis().summary #type: ignore
-            if(X['RECOMMENDATION'] == "STRONG_BUY"):
+            X_4 = data_TA_4_hour.get_analysis().summary # type: ignore
+            X_DAY = data_TA_day.get_analysis().summary # type: ignore
+
+            if(X['RECOMMENDATION'] == "STRONG_BUY" and X_4['RECOMMENDATION'] == "STRONG_BUY" and X_DAY['RECOMMENDATION'] == "STRONG_BUY"):
 
               
                 final_list[i[1]] = [data[['Close','macd','macd_signal','r2']]]
