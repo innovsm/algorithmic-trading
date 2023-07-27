@@ -72,8 +72,8 @@ def process_company_list(data_test,company_number):
 
     for i in data_test[:company_number]:
         try:
-            data = yf.download(i[1]+".NS", period = "40d", interval = "60m")
-            r2 = calculate_linear_regression_r2(data['Close'], 14)
+            data = convert_to_4h_data(i[1]+".NS")
+      
             macd_data = ta.trend.MACD(data['Close']).macd()  # type: ignore
             macdsignal_data = ta.trend.MACD(data['Close']).macd_signal()  # type: ignore
             data['macd'] = macd_data
