@@ -115,6 +115,55 @@ def process_company_list(data_test,company_number):
             pass
 
     return [list(final_list.keys()),list(final_list.values())]
+
+def process_company_list_us(data_test,company_number):
+    final_list = {}
+
+    for i in data_test[:company_number]:
+        try:
+            data = convert_to_4h_data(i)
+      
+            macd_data = ta.trend.MACD(data['Close']).macd()  # type: ignore
+            macdsignal_data = ta.trend.MACD(data['Close']).macd_signal()  # type: ignore
+            data['macd'] = macd_data
+            data['macd_signal'] = macdsignal_data
+            data['r2']  = calculate_linear_regression_r2_series(data['Close'], 14)
+            data.dropna(inplace=True)
+            data.index = np.arange(0,len(data)) # type: ignore
+            #alfa =  data.index
+            data_TA = TA_Handler(
+                symbol = i,
+                exchange="NASDAQ",
+                screener="america",
+                interval= Interval.INTERVAL_1_HOUR
+                )
+            data_TA_4_hour = TA_Handler(
+                symbol = i,
+                exchange="NASDAQ",
+                screener="america",
+                interval= Interval.INTERVAL_4_HOURS
+
+            )
+            data_TA_day = TA_Handler(
+                symbol = i,
+                exchange="NASDAQ",
+                screener="america",
+                interval= Interval.INTERVAL_1_DAY
+
+            )
+            X = data_TA.get_analysis().summary #type: ignore
+            X_4 = data_TA_4_hour.get_analysis().summary # type: ignore
+            X_DAY = data_TA_day.get_analysis().summary # type: ignore
+
+            if(X['RECOMMENDATION'] == "STRONG_BUY" and X_4['RECOMMENDATION'] == "STRONG_BUY" and X_DAY['RECOMMENDATION'] == "STRONG_BUY"):
+
+              
+                final_list[i[1]] = [data[['Close','macd','macd_signal','r2']]]
+        except Exception as e:
+            print(e)
+            pass
+
+    return [list(final_list.keys()),list(final_list.values())]
 class bollinger_band:
     def __init__(self, ticker):
         self.ticker = ticker

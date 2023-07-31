@@ -5,7 +5,7 @@ import seaborn as sns
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns 
-from spare_parts import ratios,get_company_list,income_statement,balance_sheet
+from spare_parts import *
 from recommend_stock import *
 import plotly.graph_objects as go
 import plotly.express as px
@@ -28,7 +28,7 @@ def load_data():
 
 with st.sidebar: #type: ignore
     #st.title("Bike Rental Prediction")
-    button_1 = st.radio("options", ['Fundamental Analysis', "Stock Recommendation","Financials","Stock Recommendation intraday"])
+    button_1 = st.radio("options", ['Fundamental Analysis', "Stock Recommendation","Financials","Stock Recommendation intraday","US-STOCKS"])
 
     
 if(button_1):
@@ -129,8 +129,49 @@ if(button_1):
                             with col_2:
 
                                 st.plotly_chart(fig_r2,use_container_width=True,sharing='streamlit') #type: ignore
+        
+
 
               
+        elif(button_1 == "US-STOCKS"):
+
+            st.title("Stock Recommendation")
+            # adding slider for selecting number of companies
+            st.subheader("Select the number of companies")
+            number_of_companies = st.slider("Number of companies",1,2012)
+            button_1 = st.button("Run")
+            # main function
+            if(button_1):
+                 st.write("processing")
+                 result = process_company_list_us(get_us_companies_list(),number_of_companies)
+                 
+                 for i, j in zip(result[0], result[1]):
+                      st.write(i)
+                      with st.expander("stock chart",False):
+                        for k in j:
+                            fig_close = go.Figure(data=go.Scatter(x=k.index, y=k['Close'], mode='lines'))
+                            fig_close.update_layout(title="Close Data", xaxis_title="Date", yaxis_title="Close Value")
+                            fig_macd = go.Figure()
+                            fig_macd.add_trace(go.Scatter(x=k.index, y=k['macd'].tail(40), mode='lines', name='MACD',line=dict(color='red')))
+                            fig_macd.add_trace(go.Scatter(x=k.index, y=k['macd_signal'].tail(40), mode='lines', name='MACD Signal',line=dict(color='yellow')))
+                            fig_macd.update_layout(title="MACD Data", xaxis_title="Date", yaxis_title="MACD Value")
+
+                            # alfa=======================
+                            fig_r2 = go.Figure()
+                            fig_r2.add_trace(go.Scatter(x=k.index, y=k['r2'].tail(30), mode='lines', name='r2_score',line=dict(color='red')))
+                            fig_r2.update_layout(title="r2 data", xaxis_title="Date", yaxis_title="r2_data")
+
+                            # seperation
+                            col_1 , col_2 = st.columns([0.6,0.4])
+                            st.plotly_chart(fig_close)
+
+                            with col_1:
+                                st.plotly_chart(fig_macd,use_container_width=True,sharing='streamlit')
+                            with col_2:
+
+                                st.plotly_chart(fig_r2,use_container_width=True,sharing='streamlit') #type: ignore
+        
+        
 
                  
 
