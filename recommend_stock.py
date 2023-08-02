@@ -116,7 +116,7 @@ def process_company_list(data_test,company_number):
 
     return [list(final_list.keys()),list(final_list.values())]
 
-def process_company_list_us(data_test,company_number):
+def process_company_list_us(data_test,company_number):  # COMPLETE INTRADAY
     final_list = {}
 
     for i in data_test[:company_number]:
@@ -155,7 +155,7 @@ def process_company_list_us(data_test,company_number):
             X_4 = data_TA_4_hour.get_analysis().summary # type: ignore
             X_DAY = data_TA_day.get_analysis().summary # type: ignore
 
-            if(X['RECOMMENDATION'] == "STRONG_BUY" and X_4['RECOMMENDATION'] == "STRONG_BUY" and X_DAY['RECOMMENDATION'] == "STRONG_BUY"):
+            if(X['RECOMMENDATION'] == "STRONG_BUY" and X_4['RECOMMENDATION'] == "STRONG_BUY"):
 
               
                 final_list[i[1]] = [data[['Close','macd','macd_signal','r2']]]
