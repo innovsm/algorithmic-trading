@@ -86,7 +86,7 @@ def process_company_list(data_test,company_number):
                 symbol = i[1],
                 exchange="NSE",
                 screener="india",
-                interval= Interval.INTERVAL_1_HOUR
+                interval= Interval.INTERVAL_30_MINUTES
                 )
             data_TA_4_hour = TA_Handler(
                 symbol = i[1],
