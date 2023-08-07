@@ -92,7 +92,7 @@ if(button_1):
                     # creating a pie chart
                     st.subheader("final call")
                     st.write(df)
-        elif(button_1 == "Stock Recommendation intraday"):
+        elif(button_1 == "Stock Recommendation LONG TERM"):
 
             st.title("Stock Recommendation")
             # adding slider for selecting number of companies
