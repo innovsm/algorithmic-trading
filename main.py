@@ -28,7 +28,7 @@ def load_data():
 
 with st.sidebar: #type: ignore
     #st.title("Bike Rental Prediction")
-    button_1 = st.radio("options", ['Fundamental Analysis', "Stock Recommendation","Financials","Stock Recommendation intraday","US-STOCKS"])
+    button_1 = st.radio("options", ['Fundamental Analysis', "Stock Recommendation","Financials","Stock Recommendation LONG TERM","US-STOCKS"])
 
     
 if(button_1):
