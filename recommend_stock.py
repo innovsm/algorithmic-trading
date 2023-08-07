@@ -106,7 +106,7 @@ def process_company_list(data_test,company_number):
                 symbol = i[1],
                 exchange="NSE",
                 screener = "india",
-                interval = Interval.INTERVAL_1_DAY
+                interval = Interval.INTERVAL_1_MONTH
             )
             X = data_TA.get_analysis().summary #type: ignore
             X_4 = data_TA_4_hour.get_analysis().summary # type: ignore
